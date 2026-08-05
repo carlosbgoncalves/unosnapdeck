@@ -9,7 +9,7 @@ interface CardComponentProps {
   onClick?: () => void;
   className?: string;
   isLifted?: boolean;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 }
 
 const COLOR_MAP: Record<CardColor, { bg: string; border: string }> = {
@@ -33,10 +33,11 @@ export const CardComponent: React.FC<CardComponentProps> = ({
   // Proportions derived directly from card_design_example.svg
   // (Outer white border: 3%, Color inner rect, photo viewport with white frame)
   const d = {
-    sm:  { w: 100, h: 140, r: 12, outerBdr: 3, pad: 4, numSz: 18, tabSz: 24, logoH: 14, photoBorder: 3, bottomH: 26 },
-    md:  { w: 150, h: 210, r: 16, outerBdr: 4, pad: 6, numSz: 26, tabSz: 36, logoH: 20, photoBorder: 4, bottomH: 36 },
-    lg:  { w: 200, h: 280, r: 20, outerBdr: 6, pad: 8, numSz: 36, tabSz: 48, logoH: 28, photoBorder: 5, bottomH: 48 },
-    xl:  { w: 250, h: 350, r: 24, outerBdr: 7, pad: 10, numSz: 46, tabSz: 60, logoH: 36, photoBorder: 6, bottomH: 60 },
+    xs:  { w: 80,  h: 112, r: 10, outerBdr: 2.5, pad: 3, numSz: 14, tabSz: 18, logoH: 10, photoBorder: 2, bottomH: 18 },
+    sm:  { w: 110, h: 154, r: 12, outerBdr: 3,   pad: 4, numSz: 18, tabSz: 24, logoH: 14, photoBorder: 3, bottomH: 24 },
+    md:  { w: 150, h: 210, r: 16, outerBdr: 4,   pad: 6, numSz: 26, tabSz: 36, logoH: 20, photoBorder: 4, bottomH: 36 },
+    lg:  { w: 200, h: 280, r: 20, outerBdr: 6,   pad: 8, numSz: 36, tabSz: 48, logoH: 28, photoBorder: 5, bottomH: 48 },
+    xl:  { w: 250, h: 350, r: 24, outerBdr: 7,   pad: 10, numSz: 46, tabSz: 60, logoH: 36, photoBorder: 6, bottomH: 60 },
   }[size];
 
   const goldStyle = (isWild: boolean): React.CSSProperties => {
