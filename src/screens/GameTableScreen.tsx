@@ -22,10 +22,18 @@ export const GameTableScreen: React.FC<GameTableScreenProps> = ({
 }) => {
   const [selectedWildCardId, setSelectedWildCardId] = useState<string | null>(null);
   const [showQuitConfirm, setShowQuitConfirm] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const game = broadcastState.game;
   const players = broadcastState.players;
   const self = broadcastState.self;
+
+  // Auto-hide toast message after 3 seconds
+  React.useEffect(() => {
+    if (!toastMessage) return;
+    const timer = setTimeout(() => setToastMessage(null), 3000);
+    return () => clearTimeout(timer);
+  }, [toastMessage]);
 
   // Preload card images into browser cache for instant rendering
   React.useEffect(() => {
@@ -55,8 +63,17 @@ export const GameTableScreen: React.FC<GameTableScreenProps> = ({
   };
 
   const handleCardClick = (card: Card) => {
-    if (!isMyTurn) return;
-    if (!isPlayableCard(card)) return;
+    if (!isMyTurn) {
+      setToastMessage(`It's currently ${currentTurnPlayer?.name || 'another player'}'s turn! Please wait.`);
+      return;
+    }
+
+    if (!isPlayableCard(card)) {
+      const topCard = game.topDiscard;
+      const activeColor = game.activeColor || topCard?.color || 'the matching';
+      setToastMessage(`Cannot play this card! Must match color (${activeColor}) or rank (${topCard?.rank}).`);
+      return;
+    }
 
     if (card.color === 'WILD') {
       setSelectedWildCardId(card.id);
@@ -78,6 +95,14 @@ export const GameTableScreen: React.FC<GameTableScreenProps> = ({
         isOpen={selectedWildCardId !== null}
         onSelectColor={handleColorSelect}
       />
+
+      {/* Toast Notification Banner */}
+      {toastMessage && (
+        <div className="fixed top-16 left-1/2 transform -translate-x-1/2 z-50 bg-[#20313f] text-white px-5 py-2.5 rounded-full shadow-2xl font-bold text-xs flex items-center gap-2 border border-white/20 animate-bounce">
+          <span className="material-symbols-outlined text-amber-400 text-sm">info</span>
+          <span>{toastMessage}</span>
+        </div>
+      )}
 
       {/* Player Order Strip (Top) */}
       <div className="w-full flex justify-center py-2.5 px-4 z-20 bg-white/90 backdrop-blur-md border-b border-[#e4dfec] shadow-xs">
