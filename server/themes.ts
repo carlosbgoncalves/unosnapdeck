@@ -27,6 +27,12 @@ export const THEME_REGISTRY: Array<Omit<ThemeOption, 'photoCount'>> = [
     description: 'Stunning tropical beaches & island lagoons.',
     icon: 'beach_access',
   },
+  {
+    id: 'martian_women',
+    name: 'Women from Mars',
+    description: 'Futuristic & glamorous sci-fi women from Mars.',
+    icon: 'female',
+  },
 ];
 
 export function getThemeDirectory(themeId: string): string | null {
