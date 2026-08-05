@@ -106,9 +106,11 @@ app.get('/api/rooms/:roomId/join/:inviteToken', (req, res) => {
   const validation = validateInviteToken(roomId, inviteToken);
 
   if (!validation.valid || !validation.room || !validation.player) {
+    console.warn(`[JOIN-VALIDATE] FAILED — roomId="${roomId}", token="${inviteToken.slice(0, 8)}…", reason="${validation.message}"`);
     return res.status(404).json({ error: validation.message || 'Invalid invite token' });
   }
 
+  console.log(`[JOIN-VALIDATE] OK — roomId="${roomId}", slot=${validation.player.slotIndex}, player="${validation.player.name}"`);
   res.json({
     roomId: validation.room.id,
     slotIndex: validation.player.slotIndex,
