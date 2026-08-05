@@ -74,26 +74,26 @@ export const CardComponent: React.FC<CardComponentProps> = ({
 
   return (
     <div
-      onClick={isPlayable ? onClick : undefined}
+      onClick={onClick}
       className={`card-stock ${sizeClasses} ${bgStyle} rounded-2xl flex flex-col justify-between p-2.5 relative select-none transition-all duration-200 border-4 border-white ${
         isPlayable ? 'cursor-pointer hover:scale-105 active:scale-95' : 'opacity-60 cursor-not-allowed filter grayscale-[20%]'
       } ${isLifted ? 'card-lifted shadow-2xl ring-4 ring-[#fe7e4f]' : ''} ${className}`}
     >
       {/* Top Left Badge */}
-      <div className="w-7 h-7 rounded-full bg-white text-[#1c1a23] flex items-center justify-center shadow-sm font-bold text-xs self-start">
+      <div className="w-7 h-7 rounded-full bg-white text-[#1c1a23] flex items-center justify-center shadow-sm font-bold text-xs self-start pointer-events-none">
         {card.rank === 'SKIP' ? '🚫' : card.rank === 'REVERSE' ? '🔄' : card.rank === 'DRAW2' ? '+2' : card.rank === 'WILD' ? '🌈' : card.rank === 'WILD4' ? '+4' : card.rank}
       </div>
 
       {/* Center Display: Photo or Symbol */}
-      <div className="flex-1 flex items-center justify-center my-1 relative overflow-hidden rounded-xl bg-white/20 border border-white/30">
-        <div className="absolute inset-0 flex items-center justify-center">
+      <div className="flex-1 flex items-center justify-center my-1 relative overflow-hidden rounded-xl bg-white/20 border border-white/30 pointer-events-none">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           {renderRankSymbol(card.rank)}
         </div>
         {cardImgUrl && (
           <img
             src={cardImgUrl}
             alt={`${card.color} ${card.rank}`}
-            className="w-full h-full object-cover rounded-xl relative z-10"
+            className="w-full h-full object-cover rounded-xl relative z-10 pointer-events-none"
             onError={(e) => {
               (e.target as HTMLElement).style.display = 'none';
             }}
@@ -102,7 +102,7 @@ export const CardComponent: React.FC<CardComponentProps> = ({
       </div>
 
       {/* Bottom Right Badge (Inverted) */}
-      <div className="w-7 h-7 rounded-full bg-white text-[#1c1a23] flex items-center justify-center shadow-sm font-bold text-xs self-end transform rotate-180">
+      <div className="w-7 h-7 rounded-full bg-white text-[#1c1a23] flex items-center justify-center shadow-sm font-bold text-xs self-end transform rotate-180 pointer-events-none">
         {card.rank === 'SKIP' ? '🚫' : card.rank === 'REVERSE' ? '🔄' : card.rank === 'DRAW2' ? '+2' : card.rank === 'WILD' ? '🌈' : card.rank === 'WILD4' ? '+4' : card.rank}
       </div>
     </div>
