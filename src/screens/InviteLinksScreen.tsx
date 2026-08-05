@@ -64,9 +64,10 @@ export const InviteLinksScreen: React.FC<InviteLinksScreenProps> = ({
         {/* Player Slots List */}
         <div className="flex flex-col gap-3">
           {inviteLinks.map((link) => {
+            const isHostSlot = link.slotIndex === 0;
             const playerInfo = broadcastState?.players.find((p) => p.slotIndex === link.slotIndex);
-            const isJoined = playerInfo ? playerInfo.joined : link.slotIndex === 0;
-            const playerName = playerInfo ? playerInfo.name : link.slotIndex === 0 ? 'Host' : `Player ${link.slotIndex + 1}`;
+            const isJoined = playerInfo ? playerInfo.joined : isHostSlot;
+            const playerName = playerInfo ? playerInfo.name : isHostSlot ? 'Host (Creator)' : `Player ${link.slotIndex + 1}`;
 
             return (
               <div
@@ -84,7 +85,7 @@ export const InviteLinksScreen: React.FC<InviteLinksScreenProps> = ({
                   <div className="flex-1">
                     <div className="font-bold text-base text-[#20313f] flex items-center gap-2">
                       {playerName}
-                      {link.slotIndex === 0 && (
+                      {isHostSlot && (
                         <span className="text-[10px] font-extrabold text-white bg-[#e52b2b] px-2 py-0.5 rounded-full uppercase tracking-wider">
                           Host
                         </span>
@@ -93,34 +94,41 @@ export const InviteLinksScreen: React.FC<InviteLinksScreenProps> = ({
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 w-full md:w-auto">
-                  <input
-                    type="text"
-                    readOnly
-                    value={link.inviteUrl}
-                    className="flex-1 md:w-44 bg-[#f8f6fb] text-[#484554] text-xs font-mono font-medium rounded-xl border border-[#ddd8e4] px-3 py-2 truncate outline-none"
-                  />
-                  <button
-                    onClick={() => handleCopy(link.inviteUrl, link.slotIndex)}
-                    title="Copy Link"
-                    className={`w-9 h-9 shrink-0 rounded-xl flex items-center justify-center transition-all ${
-                      copiedSlot === link.slotIndex
-                        ? 'bg-[#38a34a] text-white'
-                        : 'bg-[#20313f] text-white hover:bg-[#2b70c9]'
-                    }`}
-                  >
-                    <span className="material-symbols-outlined text-lg">
-                      {copiedSlot === link.slotIndex ? 'check' : 'content_copy'}
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => handleShare(link.inviteUrl)}
-                    title="Share"
-                    className="w-9 h-9 shrink-0 bg-[#f1ecf8] border border-[#ddd8e4] text-[#20313f] rounded-xl flex items-center justify-center hover:bg-[#e4dfec]"
-                  >
-                    <span className="material-symbols-outlined text-lg">share</span>
-                  </button>
-                </div>
+                {isHostSlot ? (
+                  <div className="text-xs font-bold text-[#2e7d32] bg-[#e8f5e9] border border-[#a5d6a7] px-3.5 py-2 rounded-xl flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-sm">verified_user</span>
+                    <span>Creator Slot (You)</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 w-full md:w-auto">
+                    <input
+                      type="text"
+                      readOnly
+                      value={link.inviteUrl}
+                      className="flex-1 md:w-44 bg-[#f8f6fb] text-[#484554] text-xs font-mono font-medium rounded-xl border border-[#ddd8e4] px-3 py-2 truncate outline-none"
+                    />
+                    <button
+                      onClick={() => handleCopy(link.inviteUrl, link.slotIndex)}
+                      title="Copy Link"
+                      className={`w-9 h-9 shrink-0 rounded-xl flex items-center justify-center transition-all ${
+                        copiedSlot === link.slotIndex
+                          ? 'bg-[#38a34a] text-white'
+                          : 'bg-[#20313f] text-white hover:bg-[#2b70c9]'
+                      }`}
+                    >
+                      <span className="material-symbols-outlined text-lg">
+                        {copiedSlot === link.slotIndex ? 'check' : 'content_copy'}
+                      </span>
+                    </button>
+                    <button
+                      onClick={() => handleShare(link.inviteUrl)}
+                      title="Share"
+                      className="w-9 h-9 shrink-0 bg-[#f1ecf8] border border-[#ddd8e4] text-[#20313f] rounded-xl flex items-center justify-center hover:bg-[#e4dfec]"
+                    >
+                      <span className="material-symbols-outlined text-lg">share</span>
+                    </button>
+                  </div>
+                )}
 
                 <div className="w-full md:w-auto flex justify-end">
                   {isJoined ? (
