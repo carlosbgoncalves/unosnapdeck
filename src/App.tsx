@@ -35,34 +35,51 @@ export default function App() {
     const path = window.location.pathname;
     const parts = path.split('/').filter(Boolean);
 
+    let routeMatchedFromUrl = false;
+
     if (parts.length >= 2) {
       const action = parts[0];
       const rId = parts[1].toLowerCase().trim();
 
-      setRoomId(rId);
-
       if (action === 'join' && parts.length >= 3) {
+        // Guest joining via invite link — use ONLY URL params, never localStorage
+        setRoomId(rId);
         setInviteToken(parts[2]);
         setCurrentScreen('JOIN');
+        routeMatchedFromUrl = true;
       } else if (action === 'invite') {
+        setRoomId(rId);
         setCurrentScreen('INVITE');
+        routeMatchedFromUrl = true;
       } else if (action === 'lobby') {
+        setRoomId(rId);
         setCurrentScreen('LOBBY');
+        routeMatchedFromUrl = true;
       } else if (action === 'upload') {
+        setRoomId(rId);
         setCurrentScreen('UPLOAD');
+        routeMatchedFromUrl = true;
       } else if (action === 'game') {
+        setRoomId(rId);
         setCurrentScreen('GAME');
+        routeMatchedFromUrl = true;
       } else if (action === 'win') {
+        setRoomId(rId);
         setCurrentScreen('WIN');
+        routeMatchedFromUrl = true;
       }
     }
 
-    // Try restoring saved local session
-    const savedPlayerId = localStorage.getItem('snapdeck_playerId');
-    const savedRoomId = localStorage.getItem('snapdeck_roomId');
-    if (savedPlayerId && savedRoomId) {
-      setPlayerId(savedPlayerId);
-      setRoomId(savedRoomId);
+    // Only restore from localStorage when NOT navigating to a specific URL route.
+    // This prevents stale localStorage from a previous session from overwriting
+    // the roomId/playerId that was just parsed from the invite URL.
+    if (!routeMatchedFromUrl) {
+      const savedPlayerId = localStorage.getItem('snapdeck_playerId');
+      const savedRoomId = localStorage.getItem('snapdeck_roomId');
+      if (savedPlayerId && savedRoomId) {
+        setPlayerId(savedPlayerId);
+        setRoomId(savedRoomId);
+      }
     }
   }, []);
 
