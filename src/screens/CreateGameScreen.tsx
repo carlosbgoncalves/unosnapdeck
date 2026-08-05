@@ -36,6 +36,13 @@ const FALLBACK_THEMES: ThemeOption[] = [
     icon: 'beach_access',
     photoCount: 114,
   },
+  {
+    id: 'martian_women',
+    name: 'Women from Mars',
+    description: 'Futuristic & glamorous sci-fi women from Mars.',
+    icon: 'female',
+    photoCount: 62,
+  },
 ];
 
 export const CreateGameScreen: React.FC<CreateGameScreenProps> = ({ onCreateGame, isLoading }) => {

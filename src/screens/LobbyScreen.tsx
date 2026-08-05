@@ -36,6 +36,8 @@ export const LobbyScreen: React.FC<LobbyScreenProps> = ({
       ? 'Professional Monkeys'
       : themeId === 'tropical_beaches'
       ? 'Tropical Beaches'
+      : themeId === 'martian_women'
+      ? 'Women from Mars'
       : themeId;
 
   return (
