@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 450" width="100%" height="100%">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#1f2d3a" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <g transform="translate(0, 0)">
+    <!-- Main Outer White Card with Thick Dark Outline -->
+    <rect x="100" y="10" width="300" height="430" rx="40" ry="40" fill="#ffffff" stroke="#20313f" stroke-width="12" filter="url(#shadow)"/>
+
+    <!-- Inner Card Mask Clip Path -->
+    <clipPath id="cardClip">
+      <rect x="116" y="26" width="268" height="398" rx="28" ry="28"/>
+    </clipPath>
+
+    <g clip-path="url(#cardClip)">
+      <!-- Top Left Red Block -->
+      <path d="M 100,10 L 390,10 L 100,320 Z" fill="#e52b2b"/>
+      <!-- Top Right / Middle Blue Block -->
+      <path d="M 390,10 L 400,10 L 400,220 L 230,80 Z" fill="#2b70c9"/>
+      <!-- Middle / Right Yellow Oval & Area -->
+      <path d="M 400,40 C 310,40 210,180 210,300 C 210,380 260,440 400,440 Z" fill="#f5b812"/>
+      <!-- Bottom Green Block -->
+      <path d="M 100,280 L 400,160 L 400,440 L 100,440 Z" fill="#38a34a"/>
+
+      <!-- White Tilted Ring / Ellipse Swoosh -->
+      <ellipse cx="250" cy="225" rx="130" ry="170" fill="none" stroke="#ffffff" stroke-width="18" transform="rotate(-28 250 225)"/>
+
+      <!-- Center Wavy Polaroid Photo Frame (Tilted Dark Blue/Slate Container) -->
+      <g transform="translate(250, 225) rotate(-10) translate(-250, -225)">
+        <!-- Outer Dark Wavy Frame -->
+        <path d="M 160,110 Q 250,130 340,110 Q 360,210 340,310 Q 250,290 160,310 Q 140,210 160,110 Z" fill="#20313f"/>
+        <!-- Inner White Photo Area -->
+        <path d="M 172,122 Q 250,140 328,122 Q 346,210 328,298 Q 250,280 172,298 Q 154,210 172,122 Z" fill="#ffffff"/>
+        
+        <!-- Silhouette Group (Person + Dog in Dark Slate #20313f) -->
+        <g fill="#20313f">
+          <!-- Person Head & Hair -->
+          <path d="M 210,185 C 200,185 190,175 190,160 C 190,145 200,135 215,135 C 220,130 230,125 240,130 C 248,125 258,130 260,138 C 265,136 272,140 270,150 C 275,155 270,165 265,170 C 260,182 245,190 230,190 C 218,190 212,186 210,185 Z"/>
+          <!-- Smiling Mouth (White cutout) -->
+          <path d="M 215,172 Q 228,185 240,172 Z" fill="#ffffff"/>
+          <!-- Person Body / Shoulders -->
+          <path d="M 172,298 L 172,260 C 172,225 200,210 230,210 C 255,210 265,225 268,250 C 255,270 230,298 172,298 Z"/>
+
+          <!-- Dog Head & Floppy Ears -->
+          <path d="M 265,200 C 265,190 275,182 290,182 C 300,182 312,190 315,200 C 322,200 330,210 328,220 C 325,230 312,238 300,235 C 290,235 280,225 278,215 Z"/>
+          <!-- Floppy Ear Right -->
+          <path d="M 305,192 C 315,192 330,205 328,225 C 320,225 310,210 305,192 Z"/>
+          <!-- Dog Body -->
+          <path d="M 280,225 C 280,225 290,230 295,245 L 320,298 L 268,298 C 270,270 275,240 280,225 Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

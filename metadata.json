@@ -1,0 +1,6 @@
+{
+  "name": "Snap Deck",
+  "description": "Custom UNO-style photo card game where players upload photos to generate personalized card decks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
