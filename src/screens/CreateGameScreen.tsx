@@ -72,8 +72,8 @@ export const CreateGameScreen: React.FC<CreateGameScreenProps> = ({ onCreateGame
     <div className="min-h-screen bg-[#f8f6fb] text-[#20313f] flex flex-col items-center pt-8 px-5 pb-16">
       {/* Header */}
       <header className="flex flex-col items-center justify-center w-full max-w-md mb-8 text-center">
-        <Logo size="lg" showText={true} />
-        <p className="text-base font-semibold text-[#484554] mt-2">Custom Card Game Session</p>
+        <Logo size="lg" />
+        <p className="text-base font-semibold text-[#484554] mt-2">UNO Custom Card Game Session</p>
       </header>
 
       {/* Form */}

@@ -167,25 +167,25 @@ export const GameTableScreen: React.FC<GameTableScreenProps> = ({
           </span>
         </div>
 
-        <div className="flex items-center justify-center gap-6 sm:gap-12 z-10">
+        <div className="flex items-center justify-center gap-8 sm:gap-16 z-10 py-4">
           {/* Draw Pile */}
           <div className="relative flex flex-col items-center group">
             <CardComponent
               isBack
               roomId={roomId}
-              size="md"
+              size="lg"
               onClick={isMyTurn ? onDrawCard : undefined}
             />
             {isMyTurn && (
               <button
                 onClick={onDrawCard}
-                className="mt-2 px-4 py-1.5 bg-[#e52b2b] text-white font-black text-xs rounded-full flex items-center gap-1 shadow-sm hover:bg-[#b91c1c] transition-all"
+                className="mt-3 px-5 py-2 bg-[#e52b2b] text-white font-black text-xs sm:text-sm rounded-full flex items-center gap-1.5 shadow-md hover:bg-[#b91c1c] transition-all hover:scale-105 active:scale-95 cursor-pointer"
               >
-                <span className="material-symbols-outlined text-sm">pan_tool_alt</span>
+                <span className="material-symbols-outlined text-base">pan_tool_alt</span>
                 Draw Card
               </button>
             )}
-            <div className="absolute -top-3 -right-3 w-8 h-8 bg-[#20313f] text-white font-black text-xs rounded-full flex items-center justify-center border-2 border-white shadow-md">
+            <div className="absolute -top-4 -right-4 w-9 h-9 bg-[#20313f] text-white font-black text-xs sm:text-sm rounded-full flex items-center justify-center border-2 border-white shadow-lg z-20">
               {game.drawPileCount}
             </div>
           </div>
@@ -196,19 +196,19 @@ export const GameTableScreen: React.FC<GameTableScreenProps> = ({
               <CardComponent
                 card={game.topDiscard}
                 roomId={roomId}
-                size="md"
+                size="lg"
                 isPlayable={false}
               />
             ) : (
-              <div className="w-28 h-40 sm:w-32 sm:h-48 rounded-2xl border-4 border-dashed border-[#ddd8e4] flex items-center justify-center text-[#797586] font-bold">
+              <div className="w-40 h-60 sm:w-48 sm:h-72 rounded-3xl border-4 border-dashed border-[#ddd8e4] flex items-center justify-center text-[#797586] font-bold">
                 Empty
               </div>
             )}
             {game.activeColor && (
-              <div className="mt-2 text-xs font-black text-[#20313f] bg-white px-3 py-1 rounded-full border border-[#e4dfec] flex items-center gap-1.5 shadow-xs">
+              <div className="mt-3 text-xs sm:text-sm font-black text-[#20313f] bg-white px-4 py-1.5 rounded-full border border-[#e4dfec] flex items-center gap-2 shadow-sm">
                 Active Color:{' '}
                 <span
-                  className="inline-block w-3.5 h-3.5 rounded-full border border-black/10 shadow-xs"
+                  className="inline-block w-4 h-4 rounded-full border border-black/10 shadow-xs"
                   style={{
                     backgroundColor:
                       game.activeColor === 'RED'
@@ -229,12 +229,15 @@ export const GameTableScreen: React.FC<GameTableScreenProps> = ({
       </div>
 
       {/* Player's Hand (Bottom) */}
-      <div className="w-full bg-white/90 backdrop-blur-md pt-4 pb-6 px-4 border-t border-[#e4dfec] z-30 shadow-md">
-        <div className="flex justify-between items-center max-w-4xl mx-auto mb-2 px-2">
-          <span className="text-xs font-black text-[#20313f]">Your Hand ({self.hand.length} cards)</span>
+      <div className="w-full bg-white/95 backdrop-blur-md pt-4 pb-8 px-4 border-t border-[#e4dfec] z-30 shadow-2xl">
+        <div className="flex justify-between items-center max-w-5xl mx-auto mb-3 px-2">
+          <span className="text-sm font-black text-[#20313f] flex items-center gap-2">
+            <span className="material-symbols-outlined text-base text-[#1a52e8]">style</span>
+            Your Hand ({self.hand.length} cards)
+          </span>
           <div className="flex items-center gap-3">
             {isMyTurn && (
-              <span className="text-xs font-black text-[#e52b2b]">
+              <span className="text-xs sm:text-sm font-black text-[#e52b2b] animate-pulse">
                 Select a card to play
               </span>
             )}
@@ -250,9 +253,9 @@ export const GameTableScreen: React.FC<GameTableScreenProps> = ({
           </div>
         </div>
 
-        {/* Card Hand Container */}
-        <div className="w-full overflow-x-auto hide-scrollbar py-2">
-          <div className="flex justify-center gap-2 sm:gap-3 min-w-max mx-auto px-4">
+        {/* Card Hand Container with Enhanced Overlap & Large Visual Size */}
+        <div className="w-full overflow-x-auto hide-scrollbar py-4 px-2">
+          <div className="flex justify-center gap-2 sm:gap-4 min-w-max mx-auto px-6">
             {self.hand.map((card) => {
               const playable = isPlayableCard(card);
               return (
@@ -261,7 +264,7 @@ export const GameTableScreen: React.FC<GameTableScreenProps> = ({
                   card={card}
                   roomId={roomId}
                   isPlayable={playable}
-                  size="md"
+                  size="lg"
                   onClick={() => handleCardClick(card)}
                 />
               );
