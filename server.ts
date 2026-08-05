@@ -54,9 +54,11 @@ startInactivityCleaner();
 
 // APP_URL helper
 function getAppUrl(req: express.Request): string {
-  if (process.env.APP_URL) return process.env.APP_URL;
-  const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
-  const host = req.headers['x-forwarded-host'] || req.headers.host || `localhost:${PORT}`;
+  if (process.env.APP_URL) return process.env.APP_URL.replace(/\/+$/, '');
+  const rawProto = (req.headers['x-forwarded-proto'] as string) || req.protocol || 'http';
+  const protocol = rawProto.split(',')[0].trim();
+  const rawHost = (req.headers['x-forwarded-host'] as string) || req.headers.host || `localhost:${PORT}`;
+  const host = rawHost.split(',')[0].trim();
   return `${protocol}://${host}`;
 }
 
