@@ -48,8 +48,17 @@ function loadRooms(): void {
 loadRooms();
 
 // Generate random URL-safe token
-export function generateToken(length = 22): string {
+export function generateToken(length = 32): string {
   return crypto.randomBytes(length).toString('base64url').slice(0, length);
+}
+
+// Generate guaranteed unique room ID that never repeats or collides
+export function generateUniqueRoomId(): string {
+  let id = '';
+  do {
+    id = crypto.randomBytes(6).toString('hex').toLowerCase();
+  } while (rooms.has(id));
+  return id;
 }
 
 // Compute player quotas using equal split with remainder
@@ -71,8 +80,8 @@ export function createRoom(hostName: string, nPlayers: number, deckMode: 'quick'
   hostToken: string;
   hostPlayerId: string;
 } {
-  const roomId = generateToken(8).toLowerCase();
-  const hostToken = generateToken(22);
+  const roomId = generateUniqueRoomId();
+  const hostToken = generateToken(32);
   const totalPhotos = deckMode === 'full' ? 54 : 15;
   const quotas = computeQuotas(totalPhotos, nPlayers);
 
@@ -85,9 +94,9 @@ export function createRoom(hostName: string, nPlayers: number, deckMode: 'quick'
 
   let photoIndex = 0;
   for (let slot = 0; slot < nPlayers; slot++) {
-    const inviteToken = generateToken(22);
+    const inviteToken = generateToken(32);
     const isHostSlot = slot === 0;
-    const playerId = generateToken(16);
+    const playerId = generateToken(24);
 
     const slotQuota = quotas[slot];
     const initialPhotos = themePhotos.length > 0
@@ -156,7 +165,9 @@ export function createRoom(hostName: string, nPlayers: number, deckMode: 'quick'
 }
 
 export function getRoom(roomId: string): Room | undefined {
-  const room = rooms.get(roomId);
+  if (!roomId) return undefined;
+  const normalizedId = roomId.toLowerCase().trim();
+  const room = rooms.get(normalizedId);
   if (room) {
     room.lastActivityAt = Date.now();
   }
@@ -164,7 +175,8 @@ export function getRoom(roomId: string): Room | undefined {
 }
 
 export function deleteRoomState(roomId: string): void {
-  rooms.delete(roomId);
+  if (!roomId) return;
+  rooms.delete(roomId.toLowerCase().trim());
   saveRooms();
 }
 
@@ -176,7 +188,7 @@ export function validateInviteToken(roomId: string, inviteToken: string): {
   message?: string;
 } {
   const room = getRoom(roomId);
-  if (!room) return { valid: false, message: 'Room not found' };
+  if (!room) return { valid: false, message: 'Room not found or expired' };
 
   const player = room.players.find((p) => p.inviteToken === inviteToken);
   if (!player) return { valid: false, message: 'Invalid invite token' };

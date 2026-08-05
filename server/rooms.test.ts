@@ -85,4 +85,22 @@ describe('Rooms Unit Tests', () => {
     // Clean up
     deleteRoomState(room.id);
   });
+
+  test('room lookup is case-insensitive and generated room IDs are unique', () => {
+    const { room: r1 } = createRoom('User1', 2, 'quick', 'http://localhost:3000');
+    const { room: r2 } = createRoom('User2', 2, 'quick', 'http://localhost:3000');
+
+    assert.notEqual(r1.id, r2.id, 'Each session must have a completely unique room ID');
+
+    // Case-insensitive lookup test
+    const fetchedLower = getRoom(r1.id.toLowerCase());
+    const fetchedUpper = getRoom(r1.id.toUpperCase());
+    assert.ok(fetchedLower, 'Lookup by lowercase ID should succeed');
+    assert.ok(fetchedUpper, 'Lookup by uppercase ID should succeed');
+    assert.equal(fetchedLower?.id, r1.id);
+    assert.equal(fetchedUpper?.id, r1.id);
+
+    deleteRoomState(r1.id);
+    deleteRoomState(r2.id);
+  });
 });
