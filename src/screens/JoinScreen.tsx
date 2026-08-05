@@ -13,11 +13,16 @@ export const JoinScreen: React.FC<JoinScreenProps> = ({ roomId, inviteToken, onJ
   const [isJoining, setIsJoining] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    // Validate join token
+  const validateToken = () => {
+    setIsLoading(true);
+    setError(null);
+
     fetch(`/api/rooms/${roomId}/join/${inviteToken}`)
-      .then((res) => {
-        if (!res.ok) throw new Error('Invite link is invalid or already used');
+      .then(async (res) => {
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error(body.error || `Server returned ${res.status}`);
+        }
         return res.json();
       })
       .then((data) => {
@@ -27,9 +32,14 @@ export const JoinScreen: React.FC<JoinScreenProps> = ({ roomId, inviteToken, onJ
         setIsLoading(false);
       })
       .catch((err) => {
+        console.error('[JoinScreen] Validation failed:', { roomId, inviteToken: inviteToken.slice(0, 6) + '...', error: err.message });
         setError(err.message);
         setIsLoading(false);
       });
+  };
+
+  useEffect(() => {
+    validateToken();
   }, [roomId, inviteToken]);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -44,8 +54,11 @@ export const JoinScreen: React.FC<JoinScreenProps> = ({ roomId, inviteToken, onJ
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ playerName: playerName.trim() }),
     })
-      .then((res) => {
-        if (!res.ok) throw new Error('Could not join room');
+      .then(async (res) => {
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error(body.error || 'Could not join room');
+        }
         return res.json();
       })
       .then((data) => {
@@ -77,12 +90,20 @@ export const JoinScreen: React.FC<JoinScreenProps> = ({ roomId, inviteToken, onJ
           </div>
           <h2 className="text-2xl font-black text-[#20313f]">Invitation Error</h2>
           <p className="text-sm font-semibold text-[#484554] mt-2 mb-6">{error}</p>
-          <a
-            href="/"
-            className="inline-block bg-[#20313f] text-white px-6 py-3 rounded-full text-sm font-bold shadow-sm hover:bg-[#2b70c9] transition-all"
-          >
-            Create New Game
-          </a>
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={validateToken}
+              className="inline-block bg-[#2b70c9] text-white px-6 py-3 rounded-full text-sm font-bold shadow-sm hover:bg-[#1d5ba8] transition-all"
+            >
+              Retry
+            </button>
+            <a
+              href="/"
+              className="inline-block bg-[#20313f] text-white px-6 py-3 rounded-full text-sm font-bold shadow-sm hover:bg-[#2b70c9] transition-all"
+            >
+              Create New Game
+            </a>
+          </div>
         </div>
       </div>
     );
