@@ -15,20 +15,15 @@ export const Header: React.FC<HeaderProps> = ({ playerName, isHost, roomId, onHo
       <div className="flex justify-between items-center px-4 sm:px-8 py-2.5 w-full max-w-7xl mx-auto">
         {/* Brand Logo */}
         <div 
-          className="flex items-center gap-3 cursor-pointer group"
+          className="flex items-center gap-2 cursor-pointer group"
           onClick={onHomeClick}
         >
-          <Logo size="sm" showText={false} />
-          <div>
-            <h1 className="font-extrabold text-xl text-[#20313f] tracking-tight leading-none group-hover:text-[#2b70c9] transition-colors">
-              Snap Deck
-            </h1>
-            {roomId && (
-              <span className="text-[11px] font-bold text-[#e52b2b] bg-[#fee2e2] px-2 py-0.5 rounded-full inline-block mt-0.5 border border-[#fca5a5]">
-                Room #{roomId}
-              </span>
-            )}
-          </div>
+          <Logo size="sm" />
+          {roomId && (
+            <span className="text-[11px] font-bold text-[#e52b2b] bg-[#fee2e2] px-2 py-0.5 rounded-full inline-block border border-[#fca5a5]">
+              Room #{roomId}
+            </span>
+          )}
         </div>
 
         {/* Player Profile & Quit info */}

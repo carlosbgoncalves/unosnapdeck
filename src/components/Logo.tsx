@@ -6,30 +6,25 @@ interface LogoProps {
   className?: string;
 }
 
-export const Logo: React.FC<LogoProps> = ({ size = 'md', showText = true, className = '' }) => {
+export const Logo: React.FC<LogoProps> = ({ size = 'md', className = '' }) => {
   const sizeMap = {
-    sm: { img: 'w-16 h-16', text: 'text-xl' },
-    md: { img: 'w-24 h-24', text: 'text-3xl' },
-    lg: { img: 'w-48 h-48', text: 'text-5xl' },
-    xl: { img: 'w-72 h-72', text: 'text-6xl' },
+    sm: 'h-10 sm:h-12 w-auto',
+    md: 'h-24 sm:h-28 w-auto',
+    lg: 'h-44 sm:h-52 w-auto',
+    xl: 'h-64 sm:h-76 w-auto',
   };
 
   const currentSize = sizeMap[size];
 
   return (
     <div className={`flex flex-col items-center justify-center ${className}`}>
-      <div className={`relative ${currentSize.img} flex items-center justify-center shrink-0`}>
+      <div className={`relative ${currentSize} flex items-center justify-center shrink-0`}>
         <img
-          src="/logo.svg"
-          alt="Snap Deck Logo"
-          className="w-full h-full object-contain filter drop-shadow-sm transition-transform hover:scale-105"
+          src="/logo.png"
+          alt="Snap Deck"
+          className="h-full w-auto object-contain filter drop-shadow-md transition-transform hover:scale-105"
         />
       </div>
-      {showText && (
-        <span className={`font-black ${currentSize.text} tracking-tight text-[#20313f] mt-1 font-['Quicksand']`}>
-          Snap Deck
-        </span>
-      )}
     </div>
   );
 };
