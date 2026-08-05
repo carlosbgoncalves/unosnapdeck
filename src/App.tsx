@@ -37,7 +37,7 @@ export default function App() {
 
     if (parts.length >= 2) {
       const action = parts[0];
-      const rId = parts[1];
+      const rId = parts[1].toLowerCase().trim();
 
       setRoomId(rId);
 
